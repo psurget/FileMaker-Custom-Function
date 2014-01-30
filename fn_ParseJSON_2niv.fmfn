@@ -1,4 +1,4 @@
-<fmxmlsnippet type="FMObjectList"><CustomFunction id="7" functionArity="5" visible="True" parameters="JSON;node;instance;underNode;UN_instance" name="fn_ParseJSON"><Calculation><![CDATA[Let(
+Let(
     [
         CodeClean =
         Substitute(
@@ -42,4 +42,4 @@
     ];
 
     Trim( result )
-)]]></Calculation></CustomFunction></fmxmlsnippet>
+)
