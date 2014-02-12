@@ -9,7 +9,7 @@ Let(
 ["[";"[¶"];
 ["]";"]¶"];
         );
-If ( patterncount (node;"[") ; 
+If ( patterncount (json; Quote(node) & ":[") > 0 ; 
 Let ([
 ~start = position ( node; "[" ;1;1 );
 ~end = position ( node ; "]"; start ; 1);
