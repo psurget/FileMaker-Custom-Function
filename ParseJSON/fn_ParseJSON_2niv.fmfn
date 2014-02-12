@@ -1,0 +1,35 @@
+Let(
+    [
+        CodeClean =
+        Substitute ( json ;
+["\"";""];
+["{";""];
+["},";"¶"];
+["}";"¶"];
+["[";"[¶"];
+["]";"]¶"];
+        );
+If ( patterncount (node;"[") ; 
+Let ([
+~start = position ( node; "[" ;1;1 );
+~end = position ( node ; "]"; start ; 1);
+~instance = middle ( node ; ~pos ; ~end - ~start);
+~array = middle(json ; ~start ; ~end - ~start);
+~under = Right ( node ; ~end - ~start + length (~instance))
+];
+Fn_parsejson ( ~array ; ~under ; ~instance)
+
+)// node[instan].node
+        //Clean up the code
+        start = Position( CodeClean; node & ":"; 1; instance );
+        //Find where the node is
+        vCount = PatternCount( Left( CodeClean; start ); "¶" ) + 1;
+        //Find the value position
+        Result =
+      Substitute ( GetValue( CodeClean; vCount ); Node & ":"; "" )
+        )
+        //get the value and remove the node name
+    ];
+
+    Trim( result )
+)
