@@ -1,35 +1,79 @@
+/**
+ * =====================================
+ * fn_ParseJSON_2niv ( JSON ; node ; instance ; undernode ; instance2 )
+ *
+ * RETURNS:
+ *		Extract JSON Data into 2 level.
+ *
+ * PARAMETERS:
+ *		JSON: The JSON text result
+ *		node: The name of the label to the value
+ * 		instance: Wich occurence to grab
+ * 		undernode: The name of the label under the node
+ * 		instance2: Wich occurence for the undernode to grab
+ *
+ * EXAMPLE:
+ *		fn_ParseJSON_2niv ("{"name":"Paul"},{"colors"":[{"name":"blue"},{"name":"orange"}]}" ; "colors" ; 1 ; "name" ; 2 )
+ *
+ * DEPENDENCIES: none
+ *
+ * HISTORY:
+ *		MODIFIED on 2014-02-17 by Pascal Surget <http://www.creaxion.ca> to have a recursive function to grab 
+ *		2 levels and more
+ *		MODIFIED on 2012-11-28 by Jeremy Bante <http://scr.im/jbante> to return
+ *		error feedback, and to prefix names with "$".
+ *		CREATED on 2012-11-10 by Jeremy Bante <http://scr.im/jbante>.
+ * =====================================
+ */
+
 Let(
     [
-        CodeClean =
-        Substitute ( json ;
-["\"";""];
-["{";""];
-["},";"¶"];
-["}";"¶"];
-["[";"[¶"];
-["]";"]¶"];
-        );
-If ( patterncount (json; Quote(node) & ":[") > 0 ; 
-Let ([
-~start = position ( node; "[" ;1;1 );
-~end = position ( node ; "]"; start ; 1);
-~instance = middle ( node ; ~pos ; ~end - ~start);
-~array = middle(json ; ~start ; ~end - ~start);
-~under = Right ( node ; ~end - ~start + length (~instance))
-];
-Fn_parsejson ( ~array ; ~under ; ~instance)
+	
+	//json = Movies::result__gt;
+	//node = "genres";
+	//instance = 1 ;
+        //undernode = "name";
+        //instance2 = 1;
 
-)// node[instan].node
+        CodeClean =
+        Substitute(
+            JSON;
+            ["^" ; ""];
+            [ "\""; "" ];
+            [ "["; "[¶" ];
+            [ "]"; "]¶" ];
+            [ ":{"; "¶•" ];
+            [ "},"; "¶" ];
+            [ "{"; "•" ];
+            [ "}"; "" ];
+            [ ","; "¶•" ]
+        );
         //Clean up the code
-        start = Position( CodeClean; node & ":"; 1; instance );
+        start = Position( CodeClean; "•" & node & ":"; 1; instance );
         //Find where the node is
         vCount = PatternCount( Left( CodeClean; start ); "¶" ) + 1;
         //Find the value position
-        Result =
-      Substitute ( GetValue( CodeClean; vCount ); Node & ":"; "" )
-        )
+Result =
+If ( IsEmpty (undernode);
+            Substitute( GetValue( CodeClean; vCount ); "•" & node & ":"  ; "" ) ;
         //get the value and remove the node name
-    ];
+//ELSE
+	Let ([
 
-    Trim( result )
+		~array.start = Position ( CodeClean ; "[" ; start ; 1 ) +2 ;
+		~array.end = Position ( CodeClean ; "]" ; ~array.start ; 1 ) ;
+		~array = Middle ( CodeClean ; ~array.start ; ~array.end - ~array.start );
+                ~array.Value = Position (~array ;  "•" & undernode & ":" ; 1 ; instance2 );
+                ~arrayCount = PatternCount( Left (~array ; ~array.Value ) ; "¶" ) +1 ; //Find the undernode
+                ~arrayClean = Substitute ( GetValue (~array ; ~arrayCount  ) ; "•" & undernode & ":"  ; "" )
+
+		];
+
+		~arrayClean
+	)
+)
+
+        ];
+
+         If ( Trim(Result) = "null" ; "" ; Trim(Result))
 )
