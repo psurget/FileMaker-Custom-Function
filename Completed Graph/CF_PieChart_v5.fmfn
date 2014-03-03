@@ -1,4 +1,6 @@
 // jsProgress( Pourcentage ; Size )
+// OPTIONS (separation ", " : lineWidth, lineCap (butt, round, square), animate (milliseconds or false), onStart, onStop, onStep
+// http://rendro.github.io/easy-pie-chart/
 // v5
 
 "data:text/html," &
@@ -67,7 +69,8 @@ body {
 <script>
 $(function() {
     $('.percentage').easyPieChart({
-    size: " & Size-10 & "
+    size: " & Size-10 & ", " &
+	Options &	"
     });
 });
 </script>
