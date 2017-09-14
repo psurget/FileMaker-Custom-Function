@@ -1,0 +1,71 @@
+//jsTimeClock ( Base64_Background ; FontFamily ; DateColor ; FontSizeDate ; FontSizeHeure ; HeureColor )
+// v1
+
+"data:text/html,
+<html>
+<head>
+<style>
+div { color:#" & DateColor & "; font-size:" & FontSizeDate & "px; }
+div.heure { color:#" & HeureColor & "; font-weight: bold; font-size:" & FontSizeHeure & "px;}
+body { border: 0; margin: 0; font-family:" & FontFamily &"; }
+</style>
+
+<script>
+function startTime() {
+var today=new Date();
+var day = today.getDay();
+var date = today.getDate();
+
+var weekday=new Array(7);
+weekday[0]='Dim';
+weekday[1]='Lun';
+weekday[2]='Mar';
+weekday[3]='Mer';
+weekday[4]='Jeu';
+weekday[5]='Ven';
+weekday[6]='Sam';
+
+var monthname=new Array(12);
+monthname[0]='Janvier';
+monthname[1]='Février';
+monthname[2]='Mars';
+monthname[3]='Avril';
+monthname[4]='Mai';
+monthname[5]='Juin';
+monthname[6]='Juillet';
+monthname[7]='Août';
+monthname[8]='Septembre';
+monthname[9]='Octobre';
+monthname[10]='Novembre';
+monthname[11]='Décembre';
+
+dayname=weekday[day];
+var month = today.getMonth();
+month_name=monthname[month];
+var year = today.getFullYear();
+var h=today.getHours();
+var m=today.getMinutes();
+var s=today.getSeconds();
+h=checkTime(h);
+m=checkTime(m);
+s=checkTime(s);
+
+document.getElementById('txt').innerHTML= dayname + ', ' + date + ' ' + month_name + ' ' + year + '<br/>' + '<div class=\"heure\">' + h+ ':' +m+':' +s + '</div>';
+t=setTimeout(function(){startTime()},500);
+}
+
+function checkTime(i)
+{
+if (i<10)
+  {
+  i='0' + i;
+  }
+return i;
+}
+</script>
+</head>
+<body onload='startTime()' background='data:image/png;base64," & Base64_Background & "'>
+<div id='txt' style='width:100%; height:100%; text-align:center; vertical-align:middle'>
+</div>
+</body>
+</html>"

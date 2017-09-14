@@ -60,17 +60,17 @@ If ( IsEmpty (undernode);
 //ELSE
 	Let ([
 
-		~array.start = Position ( CodeClean ; "[" ; start ; 1 ) +2 ;
-		~array.end = Position ( CodeClean ; "]" ; ~array.start ; 1 ) ;
-		~array = Middle ( CodeClean ; ~array.start ; ~array.end - ~array.start );
-                ~array.Value = Position (~array ;  "•" & undernode & ":" ; 1 ; instance2 );
-                ~arrayCount = PatternCount( Left (~array ; ~array.Value ) ; "¶" ) +1 ; //Find the undernode
-                ~arrayClean = Substitute ( GetValue (~array ; ~arrayCount  ) ; "•" & undernode & ":"  ; "" )
+			~array.start = Position ( CodeClean ; "[" ; start ; 1 ) +2 ;
+			~array.end = Position ( CodeClean ; "]" ; ~array.start ; 1 ) ;
+			~array = Middle ( CodeClean ; ~array.start ; ~array.end - ~array.start );
+        	~array.Value = Position (~array ;  "•" & undernode & ":" ; 1 ; instance2 );
+        	~arrayCount = PatternCount( Left (~array ; ~array.Value ) ; "¶" ) +1 ; //Find the undernode
+        	~arrayClean = Substitute ( GetValue (~array ; ~arrayCount  ) ; "•" & undernode & ":"  ; "" )
 
-		];
+			];
 
-		~arrayClean
-	)
+			~arrayClean
+		)
 )
 
         ];

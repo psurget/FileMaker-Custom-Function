@@ -1,0 +1,43 @@
+Let(
+    [
+	
+	json = Movies::result__gt;
+	node = "belongs_to_collection";
+	instance = 1;
+        undernode = "name";
+        instance2 =1;
+	
+        ~start = Position( json; Quote(node) & ":"; 1; instance );
+	~fake = Right ( Left ( json; ~start + Length ( Quote(node) & ":") ) ; 1 ) = "{" ;
+	~end = If ( 
+			~fake = 1 ; 
+			Position (json; "}" ; ~start ; 1 ) ;
+			Position (json; "," ; ~start ; 1 )
+		   );
+
+        ~value = Middle ( json; ~start ; ~end - ~start );
+
+Result =
+	If ( ~fake = 0 ;
+	            Substitute( ~value ; Quote(node) & ":"  ; "" ) ;
+        //get the value and remove the node name
+	//ELSE
+		Let ([
+	
+			~array.start = Position ( json ; "[" ; ~start ; 1 ) +2 ;
+			~array.end = Position ( json ; "]" ; ~array.start ; 1 ) ;
+			~array = Middle ( json ; ~array.start ; ~array.end - ~array.start );
+	                ~array.Value = Position (~array ;  "•" & undernode & ":" ; 1 ; instance2 );
+	                ~arrayCount = PatternCount( Left (~array ; ~array.Value ) ; "¶" ) +1 ; //Find the undernode
+	                ~arrayClean = Substitute ( GetValue (~array ; ~arrayCount  ) ; "•" & undernode & ":"  ; "" )
+	
+			];
+
+			~arrayClean
+		)
+	)
+
+        ];
+
+		Result	        // Middle ( json ; start ; end - start)
+)
